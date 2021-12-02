@@ -1,0 +1,149 @@
+import java.util.*;
+
+public class tocia2 {
+    static Map<String,List<List<String>>> produrules;
+    static List<String>[] gnf;
+    static int variables;
+
+    tocia2(){
+
+        produrules = new HashMap<>();
+        gnf = new ArrayList[50];
+        //variables = produrules.size();
+        variables = 9;
+        gnf[1] = new ArrayList<>(Arrays.asList("17","23","58","a","b"));
+        gnf[2] = new ArrayList<>(Arrays.asList("23","58","a","b"));
+        gnf[3] = new ArrayList<>(Arrays.asList("58","a","b","c"));
+        gnf[4] = new ArrayList<>(Arrays.asList("+"));
+        gnf[5] = new ArrayList<>(Arrays.asList("("));
+        gnf[6] = new ArrayList<>(Arrays.asList(")"));
+        gnf[7] = new ArrayList<>(Arrays.asList("42"));
+        gnf[8] = new ArrayList<>(Arrays.asList("16"));
+
+    }
+
+   public static void GNF(){
+     int i=1;
+
+      do{
+          System.out.println("*******"+i+"********");
+          inAscending(i);
+          System.out.println("Ascending "+gnf[i]);
+         isleftRecursion( i, gnf[i]);
+          System.out.println("Left Recursion "+gnf[i]);
+
+      i++;
+     }while(i<variables);
+
+
+      gnfprint();
+
+
+
+     }
+
+     public static void inAscending(int aindex ) {
+
+
+         for(int i=0; i<gnf[aindex].size(); i++) {
+
+             if(Character.isDigit(gnf[aindex].get(i).charAt(0)) && aindex > Character.getNumericValue(gnf[aindex].get(i).charAt(0))) {
+
+                 String old = gnf[aindex].get(i).substring(1);
+
+                 int index = Character.getNumericValue(gnf[aindex].get(i).charAt(0));
+                 gnf[aindex].remove(i);
+
+                     String[] newstates = new String[gnf[index].size()];
+
+
+                     for (int j = 0; j < gnf[index].size(); j++) {
+
+                         newstates[j] =gnf[index].get(j)+old;
+
+                     }
+                     List<String> list = Arrays.asList(newstates);
+                     gnf[aindex].addAll(list);
+
+                    i--;
+
+
+             }
+
+         }
+
+     }
+
+     public static void isleftRecursion(int x, List<String> list) {
+
+
+        for(int i=0; i<list.size(); i++) {
+
+            if (Character.isDigit(list.get(i).charAt(0)) && x == Character.getNumericValue(list.get(i).charAt(0))) {
+
+                String alpha = list.get(i).substring(1);
+                list.remove(i);
+                removerecursion(x,alpha);
+            }
+
+
+        }
+
+     }
+
+     public static void removerecursion(int aindex,String alpha) {
+
+         gnf[variables] = new ArrayList<>();
+
+
+
+         gnf[variables].add(alpha);
+         gnf[variables].add(alpha+variables);
+
+         variables++;
+
+
+           String[] newstates = new String[gnf[aindex].size()];
+            String newstate = Integer.toString(variables-1);
+
+         for(int i=0; i<gnf[aindex].size(); i++){
+
+             newstates[i] =gnf[aindex].get(i)+newstate;
+
+         }
+
+         List<String> list = Arrays.asList(newstates);
+         gnf[aindex].addAll(list);
+
+
+
+
+     }
+
+
+     public static void gnfprint(){
+
+
+        for(int i=1; i<variables; i++){
+
+            System.out.println("A"+i+" -> "+gnf[i]);
+        }
+
+
+
+
+     }
+
+ 
+
+
+   public static void main(String[] args){
+
+    tocia2 obj = new tocia2();
+
+    obj.GNF();
+
+   }
+
+
+     }
