@@ -11,9 +11,32 @@ public class test1 {
         newVariable = new HashMap<>();
         produrules = new HashMap<>();
 
-        produrules.put("A",new ArrayList<>(Arrays.asList("A+B","B")));
-        produrules.put("B",new ArrayList<>(Arrays.asList("BS","S")));
-        produrules.put("S",new ArrayList<>(Arrays.asList("(A)","a","b","c")));
+        input();
+    }
+
+    //A->A+B|B
+    //B->BS|S
+    //S->(A)|a|b|c
+    public static void input(){
+
+        Scanner s = new Scanner(System.in);
+        System.out.println("Enter number of production rules");
+        int n = s.nextInt();
+        for(int i=1; i<=n; i++){
+
+            System.out.println("Production Rule: "+i);
+            String production = s.next();
+
+              String[] parts = production.split("->", 2);
+
+
+            String[] rules = parts[1].split("\\|",5);
+            System.out.println("Production Rule: "+parts[0]);
+            for (String a : rules)
+                System.out.println(a);
+            produrules.put(parts[0],new ArrayList<>(Arrays.asList(rules)));
+        }
+
     }
    public static void replaceVariables(){
        int i=1;
